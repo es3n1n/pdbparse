@@ -157,9 +157,12 @@ def parse_stream(stream):
     for i in range(0, fileIndex.cMod):
         these = []
         for j in range(modStart[i], modStart[i] + cRefCnt[i]):
-            Name = ("Name" / CString(encoding = "utf8")).parse(Names[NameRef[j]:])
-            files.append(Name)
-            these.append(Name)
+            try:
+                Name = ("Name" / CString(encoding = "utf8")).parse(Names[NameRef[j]:])
+                files.append(Name)
+                these.append(Name)
+            except (IndexError, UnicodeDecodeError):
+                pass
         modules.append(these)
 
     # stream.seek(dbihdr.filinfSize, 1)
